@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import crypto from 'crypto-js';
 import Hls from 'hls.js';
 
 class App extends Component {
@@ -30,29 +29,6 @@ class App extends Component {
     var result = this.makeid(x)
     return result
   }
-
-  // captureFile = (event) => {
-  //   event.preventDefault();
-  //   const file = event.target.files[0]; 
-  //   const reader = new window.FileReader(); 
-  //   reader.readAsArrayBuffer(file);
-  //   reader.onloadend = () => {
-  //     console.time("encrypt");
-  //     const buffer = Buffer(reader.result);
-  //     const wordArray = crypto.lib.WordArray.create(buffer);
-  //     const str = crypto.enc.Hex.stringify(wordArray);
-  //     var aesKey = this.generateAesKey();
-  //     this.setState({aesKey: aesKey});
-  //     const ct = crypto.AES.encrypt(str, aesKey);
-  //     var ctstr = '';
-  //     ctstr = ct.toString();
-  //     ctstr = new Buffer(ctstr);
-  //     console.log(ctstr );
-  //     console.timeEnd("encrypt");
-  //     this.setState({buffer : ctstr});
-  //   }  
-  // }
-
   
   captureFile = (event) => {
     event.preventDefault();
@@ -70,7 +46,7 @@ class App extends Component {
     const buffer = this.state.buffer;
     function playVideoFromIPFS() {
       if (Hls.isSupported()) {
-        var video = document.getElementById('audio');
+        var video = document.getElementById('video');
         var hls = new Hls();
         // bind them together
         hls.attachMedia(video);
@@ -80,7 +56,8 @@ class App extends Component {
           // hls.loadSource("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
           // hls.loadSource("https://playertest.longtailvideo.com/adaptive/oceans_aes/oceans_aes.m3u8");
           // hls.loadSource("https://playertest.longtailvideo.com/adaptive/alt-audio-no-video/angel-one.m3u8");
-          // hls.loadSource(buffer);
+          // hls.loadSource("https://bafybeicwz4nsv5pvwahugco3zldkgbcjntigitkuuvn4kh6sprk6yieree.ipfs.infura-ipfs.io/out.m3u8"); 
+          //self created HLSfile using ffmpeg cli and does not work.
           hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
             console.log("manifest loaded, found " + data.levels.length + " quality level");
           });
@@ -126,8 +103,8 @@ class App extends Component {
             </form>
           <div>
             <button onClick={playVideoFromIPFS} > Play From IPFS</button>
-            {/* <video id="video" width="320" height="240" controls></video>           */}
-            <audio id="audio" controls></audio>
+            <video id="video" width="320" height="240" controls></video>          
+            {/* <audio id="video" controls></audio> */}
           </div>
         </header>
       </div>
